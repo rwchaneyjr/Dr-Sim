@@ -13,89 +13,69 @@ public class Patient : MonoBehaviour
         HeartPalpitation
     }
 
-    public Condition currentCondition;
+    [Header("Condition")]
+    public Condition currentCondition = Condition.Healthy;
 
     [Header("Stats")]
     public float health = 100f;
 
-    [Header("Visual References")]
+    [Header("Visual")]
     public Renderer bodyRenderer;
     public GameObject redNose;
     public GameObject cast;
     public GameObject heartIcon;
-    public Slider healthBar;
 
-    [Header("UI")]
-    public TMP_Text healthText;
-    public TMP_Text diagnosisText;
-    public TMP_Text resultText;
+    private DoctorTool doctorTool;
+
+    void Awake()
+    {
+        if (bodyRenderer == null)
+        {
+            bodyRenderer = GetComponent<Renderer>();
+        }
+
+        // Automatically find DoctorTool in the scene
+        doctorTool = FindObjectOfType<DoctorTool>();
+    }
 
     void Start()
     {
         UpdateVisuals();
-        UpdateHealthUI();
-        UpdateDiagnosisUI();
-    }
-
-    void Update()
-    {
-        void OnMouseDown()
-        {
-            Debug.Log("CLICKED PATIENT");   // ← test
-            Diagnose();
-        }
-        UpdateHealthUI();
     }
 
     void OnMouseDown()
     {
-        Diagnose();
-    }
-
-    void UpdateHealthUI()
-    {
-        if (healthBar != null)
-            healthBar.value = health / 100f;
-
-        if (healthText != null)
-            healthText.text = "Health: " + health.ToString("F0");
-    }
-
-    void UpdateDiagnosisUI()
-    {
-        if (diagnosisText != null)
-            diagnosisText.text = "Diagnosis: " + currentCondition.ToString();
-    }
-
-    public void Diagnose()
-    {
-        UpdateDiagnosisUI();
+        Debug.Log("CLICKED PATIENT: " + gameObject.name);
         Debug.Log("Diagnosis: " + currentCondition);
+
+        if (doctorTool != null)
+        {
+            doctorTool.SelectPatient(this);
+        }
+        else
+        {
+            Debug.LogWarning("No DoctorTool found in scene.");
+        }
     }
 
     public void SetCondition(Condition newCondition)
     {
         currentCondition = newCondition;
         UpdateVisuals();
-        UpdateDiagnosisUI();
     }
 
     public void Heal(float amount)
     {
         health += amount;
         if (health > 100f)
+        {
             health = 100f;
-
-        if (resultText != null)
-            resultText.text = "✅ Correct Treatment";
-
-        StartCoroutine(FlashGreen());
+        }
 
         if (health >= 100f)
         {
             currentCondition = Condition.Healthy;
             UpdateVisuals();
-            UpdateDiagnosisUI();
         }
     }
 
@@ -103,50 +83,9 @@ public class Patient : MonoBehaviour
     {
         health -= 30f;
         if (health < 0f)
+        {
             health = 0f;
-
-        if (resultText != null)
-            resultText.text = "❌ Adverse Reaction!";
-
-        StartCoroutine(FlashRed());
-    }
-
-    IEnumerator FlashRed()
-    {
-        if (bodyRenderer == null)
-            yield break;
-
-        Color originalColor = bodyRenderer.material.color;
-
-        for (int i = 0; i < 3; i++)
-        {
-            bodyRenderer.material.color = Color.red;
-            yield return new WaitForSeconds(0.2f);
-
-            bodyRenderer.material.color = originalColor;
-            yield return new WaitForSeconds(0.2f);
         }
-
-        UpdateVisuals();
-    }
-
-    IEnumerator FlashGreen()
-    {
-        if (bodyRenderer == null)
-            yield break;
-
-        Color originalColor = bodyRenderer.material.color;
-
-        for (int i = 0; i < 3; i++)
-        {
-            bodyRenderer.material.color = Color.green;
-            yield return new WaitForSeconds(0.2f);
-
-            bodyRenderer.material.color = originalColor;
-            yield return new WaitForSeconds(0.2f);
-        }
-
-        UpdateVisuals();
     }
 
     public void UpdateVisuals()
@@ -156,7 +95,10 @@ public class Patient : MonoBehaviour
         if (heartIcon != null) heartIcon.SetActive(false);
 
         if (bodyRenderer == null)
+        {
+            Debug.LogError("No Renderer on " + gameObject.name);
             return;
+        }
 
         if (currentCondition == Condition.Flu)
         {

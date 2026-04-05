@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3903353493254769182}
   - component: {fileID: 820073422949004010}
   - component: {fileID: 4226290827429870234}
+  - component: {fileID: 4542956430640644613}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -137,3 +138,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnTileGreen: 1
+--- !u!114 &4542956430640644613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8594363332944409827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c843236433242464181eddc8d4890a75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentCondition: 0
+  health: 100
+  bodyRenderer: {fileID: 0}
+  redNose: {fileID: 0}
+  cast: {fileID: 0}
+  heartIcon: {fileID: 0}

@@ -1,59 +1,143 @@
 ﻿using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class DoctorTool : MonoBehaviour
 {
+    [Header("UI")]
+    public TMP_Text diagnosisText;
+    public TMP_Text healthText;
     public TMP_Text resultText;
+    public GameObject panel;
 
     private Patient selectedPatient;
 
-    // Called when you click a cube
+    // Called when cube is clicked
     public void SelectPatient(Patient patient)
     {
         selectedPatient = patient;
 
-        resultText.text = "Selected: " + patient.currentCondition.ToString();
+        if (panel != null)
+        {
+            panel.SetActive(true);
+        }
 
-        Debug.Log("Patient selected: " + patient.currentCondition);
+        UpdateUI();
+
+        Debug.Log("Selected: " + patient.currentCondition);
     }
 
-    public void PrescribeFlu()
+    void Update()
+    {
+        if (selectedPatient != null)
+        {
+            UpdateUI();
+        }
+    }
+
+    void UpdateUI()
+    {
+        if (diagnosisText != null)
+        {
+            diagnosisText.text = "Diagnosis: " + selectedPatient.currentCondition.ToString();
+        }
+
+        if (healthText != null)
+        {
+            healthText.text = "Health: " + selectedPatient.health.ToString("F0");
+        }
+    }
+
+    public void TreatFlu()
     {
         if (selectedPatient == null)
         {
-            resultText.text = "Select a patient first!";
+            if (resultText != null)
+            {
+                resultText.text = "Select a patient first!";
+            }
             return;
         }
 
         if (selectedPatient.currentCondition == Patient.Condition.Flu)
         {
             selectedPatient.Heal(30f);
-            resultText.text = "✅ Flu treated";
+
+            if (resultText != null)
+            {
+                resultText.text = "Flu treated";
+            }
         }
         else
         {
             selectedPatient.AdverseReaction();
-            resultText.text = "❌ Wrong medicine";
+
+            if (resultText != null)
+            {
+                resultText.text = "Wrong medicine";
+            }
         }
     }
 
-    public void PrescribeArm()
+    public void TreatArm()
     {
         if (selectedPatient == null)
         {
-            resultText.text = "Select a patient first!";
+            if (resultText != null)
+            {
+                resultText.text = "Select a patient first!";
+            }
             return;
         }
 
         if (selectedPatient.currentCondition == Patient.Condition.BrokenArm)
         {
             selectedPatient.Heal(30f);
-            resultText.text = "✅ Arm treated";
+
+            if (resultText != null)
+            {
+                resultText.text = "Arm treated";
+            }
         }
         else
         {
             selectedPatient.AdverseReaction();
-            resultText.text = "❌ Wrong medicine";
+
+            if (resultText != null)
+            {
+                resultText.text = "Wrong medicine";
+            }
+        }
+    }
+
+    public void TreatHeart()
+    {
+        if (selectedPatient == null)
+        {
+            if (resultText != null)
+            {
+                resultText.text = "Select a patient first!";
+            }
+            return;
+        }
+
+        if (selectedPatient.currentCondition == Patient.Condition.HeartPalpitation)
+        {
+            selectedPatient.Heal(30f);
+
+            if (resultText != null)
+            {
+                resultText.text = "Heart treated";
+            }
+        }
+        else
+        {
+            selectedPatient.AdverseReaction();
+
+            if (resultText != null)
+            {
+                resultText.text = "Wrong medicine";
+            }
         }
     }
 }
