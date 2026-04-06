@@ -40,6 +40,8 @@ public class CubeGridSpawner : MonoBehaviour
 
     void SpawnGrid()
     {
+        Quaternion spawnRotation = Quaternion.Euler(-90f, 180f, 0f);
+
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < height; z++)
@@ -52,20 +54,17 @@ public class CubeGridSpawner : MonoBehaviour
 
                 Vector3 spawnPosition = startPosition + offset;
 
-                GameObject newCube = Instantiate(cubePrefab, spawnPosition, Quaternion.identity);
+                GameObject newCube = Instantiate(cubePrefab, spawnPosition, spawnRotation);
 
                 Patient patient = newCube.GetComponent<Patient>();
 
                 if (patient != null)
                 {
-                    int randomValue = Random.Range(0, 3);
+                    Patient.Condition[] allConditions =
+                        (Patient.Condition[])System.Enum.GetValues(typeof(Patient.Condition));
 
-                    if (randomValue == 0)
-                        patient.SetCondition(Patient.Condition.Flu);
-                    else if (randomValue == 1)
-                        patient.SetCondition(Patient.Condition.BrokenArm);
-                    else
-                        patient.SetCondition(Patient.Condition.HeartPalpitation);
+                    int randomIndex = Random.Range(0, allConditions.Length);
+                    patient.SetCondition(allConditions[randomIndex]);
                 }
             }
         }

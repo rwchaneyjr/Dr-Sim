@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 
 public class DoctorTool : MonoBehaviour
 {
@@ -8,20 +7,12 @@ public class DoctorTool : MonoBehaviour
     public TMP_Text diagnosisText;
     public TMP_Text healthText;
     public TMP_Text resultText;
-    public GameObject panel;
 
     private Patient selectedPatient;
 
-    // Called when cube is clicked
     public void SelectPatient(Patient patient)
     {
         selectedPatient = patient;
-
-        if (panel != null)
-        {
-            panel.SetActive(true);
-        }
-
         UpdateUI();
 
         Debug.Log("Selected: " + patient.currentCondition);
@@ -37,107 +28,89 @@ public class DoctorTool : MonoBehaviour
 
     void UpdateUI()
     {
-        if (diagnosisText != null)
-        {
-            diagnosisText.text = "Diagnosis: " + selectedPatient.currentCondition.ToString();
-        }
+        if (selectedPatient == null) return;
 
-        if (healthText != null)
-        {
-            healthText.text = "Health: " + selectedPatient.health.ToString("F0");
-        }
+        diagnosisText.text = "Diagnosis: " + selectedPatient.currentCondition.ToString();
+        healthText.text = "Health: " + selectedPatient.health.ToString("F0");
     }
 
-    public void TreatFlu()
+    // Main cure checker
+    public void Cure(Patient.Condition cureType)
     {
         if (selectedPatient == null)
         {
-            if (resultText != null)
-            {
-                resultText.text = "Select a patient first!";
-            }
+            resultText.text = "Select a patient first!";
             return;
         }
 
-        if (selectedPatient.currentCondition == Patient.Condition.Flu)
+        if (selectedPatient.currentCondition == cureType)
         {
             selectedPatient.Heal(30f);
-
-            if (resultText != null)
-            {
-                resultText.text = "Flu treated";
-            }
+            resultText.text = "Correct cure!";
         }
         else
         {
             selectedPatient.AdverseReaction();
-
-            if (resultText != null)
-            {
-                resultText.text = "Wrong medicine";
-            }
+            resultText.text = "Wrong cure!";
         }
     }
 
-    public void TreatArm()
+    // 12 NO-ARGUMENT BUTTON FUNCTIONS
+
+    public void CureDehydration()
     {
-        if (selectedPatient == null)
-        {
-            if (resultText != null)
-            {
-                resultText.text = "Select a patient first!";
-            }
-            return;
-        }
-
-        if (selectedPatient.currentCondition == Patient.Condition.BrokenArm)
-        {
-            selectedPatient.Heal(30f);
-
-            if (resultText != null)
-            {
-                resultText.text = "Arm treated";
-            }
-        }
-        else
-        {
-            selectedPatient.AdverseReaction();
-
-            if (resultText != null)
-            {
-                resultText.text = "Wrong medicine";
-            }
-        }
+        Cure(Patient.Condition.Dehydration);
     }
 
-    public void TreatHeart()
+    public void CureInfection()
     {
-        if (selectedPatient == null)
-        {
-            if (resultText != null)
-            {
-                resultText.text = "Select a patient first!";
-            }
-            return;
-        }
-
-        if (selectedPatient.currentCondition == Patient.Condition.HeartPalpitation)
-        {
-            selectedPatient.Heal(30f);
-
-            if (resultText != null)
-            {
-                resultText.text = "Heart treated";
-            }
-        }
-        else
-        {
-            selectedPatient.AdverseReaction();
-
-            if (resultText != null)
-            {
-                resultText.text = "Wrong medicine";
-            }
-        }
+        Cure(Patient.Condition.Infection);
     }
+
+    public void CureFever()
+    {
+        Cure(Patient.Condition.Fever);
+    }
+
+    public void CureBurn()
+    {
+        Cure(Patient.Condition.Burn);
+    }
+
+    public void CureSprain()
+    {
+        Cure(Patient.Condition.Sprain);
+    }
+
+    public void CureHeartPalpitation()
+    {
+        Cure(Patient.Condition.HeartPalpitation);
+    }
+
+    public void CureHeadache()
+    {
+        Cure(Patient.Condition.Headache);
+    }
+
+    public void CureFoodPoisoning()
+    {
+        Cure(Patient.Condition.FoodPoisoning);
+    }
+
+    public void CureCold()
+    {
+        Cure(Patient.Condition.Cold);
+    }
+
+    public void CureBrokenArm()
+    {
+        Cure(Patient.Condition.BrokenArm);
+    }
+
+    public void CureFlu()
+    {
+        Cure(Patient.Condition.Flu);
+    }
+
+    
 }

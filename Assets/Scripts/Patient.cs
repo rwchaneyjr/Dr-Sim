@@ -1,61 +1,58 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using System.Collections;
 
 public class Patient : MonoBehaviour
 {
     public enum Condition
     {
-        Healthy,
         Flu,
         BrokenArm,
-        HeartPalpitation
+        HeartPalpitation,
+        Fever,
+        Cold,
+        Headache,
+        Infection,
+        Burn,
+        Fracture,
+        Sprain,
+        Dehydration,
+        FoodPoisoning
     }
 
-    [Header("Condition")]
-    public Condition currentCondition = Condition.Healthy;
-
-    [Header("Stats")]
+    [Header("Patient State")]
+    public Condition currentCondition;
     public float health = 100f;
 
-    [Header("Visual")]
-    public Renderer bodyRenderer;
-    public GameObject redNose;
-    public GameObject cast;
-    public GameObject heartIcon;
+    [Header("Colors")]
+    public Color fluColor = new Color(0.4f, 1f, 0.4f);          // green
+    public Color brokenArmColor = Color.yellow;                 // yellow
+    public Color heartColor = Color.red;                        // red
+    public Color feverColor = new Color(1f, 0.5f, 0f);          // orange
+    public Color coldColor = Color.cyan;                        // cyan
+    public Color headacheColor = new Color(0.7f, 0.3f, 1f);     // purple
+    public Color infectionColor = new Color(0.5f, 1f, 0.5f);    // pale green
+    public Color burnColor = new Color(1f, 0.3f, 0.1f);         // hot orange/red
+    public Color fractureColor = new Color(1f, 1f, 0.6f);       // light yellow
+    public Color sprainColor = new Color(0.2f, 0.8f, 1f);       // blue-cyan
+    public Color dehydrationColor = new Color(0.3f, 0.5f, 1f);  // blue
+    public Color foodPoisoningColor = new Color(0.2f, 0.8f, 0.2f);
 
-    private DoctorTool doctorTool;
+    private Renderer rend;
+    private DoctorTool cachedDoctorTool;
 
     void Awake()
     {
-        if (bodyRenderer == null)
-        {
-            bodyRenderer = GetComponent<Renderer>();
-        }
+        rend = GetComponent<Renderer>();
 
-        // Automatically find DoctorTool in the scene
-        doctorTool = FindObjectOfType<DoctorTool>();
+        if (rend == null)
+        {
+            Debug.LogError("Patient: No Renderer found on " + gameObject.name);
+        }
     }
 
     void Start()
     {
+        cachedDoctorTool = FindObjectOfType<DoctorTool>();
         UpdateVisuals();
-    }
-
-    void OnMouseDown()
-    {
-        Debug.Log("CLICKED PATIENT: " + gameObject.name);
-        Debug.Log("Diagnosis: " + currentCondition);
-
-        if (doctorTool != null)
-        {
-            doctorTool.SelectPatient(this);
-        }
-        else
-        {
-            Debug.LogWarning("No DoctorTool found in scene.");
-        }
     }
 
     public void SetCondition(Condition newCondition)
@@ -67,57 +64,96 @@ public class Patient : MonoBehaviour
     public void Heal(float amount)
     {
         health += amount;
-        if (health > 100f)
-        {
-            health = 100f;
-        }
+        health = Mathf.Clamp(health, 0f, 100f);
 
-        if (health >= 100f)
+        // when fully healed, show white
+        if (health >= 100f && rend != null)
         {
-            currentCondition = Condition.Healthy;
-            UpdateVisuals();
+            rend.material.color = Color.white;
         }
     }
 
     public void AdverseReaction()
     {
-        health -= 30f;
-        if (health < 0f)
+        health -= 25f;
+        health = Mathf.Clamp(health, 0f, 100f);
+
+        if (rend != null)
         {
-            health = 0f;
+            rend.material.color = Color.black;
         }
     }
 
-    public void UpdateVisuals()
+    void UpdateVisuals()
     {
-        if (redNose != null) redNose.SetActive(false);
-        if (cast != null) cast.SetActive(false);
-        if (heartIcon != null) heartIcon.SetActive(false);
+        if (rend == null) return;
 
-        if (bodyRenderer == null)
+        switch (currentCondition)
         {
-            Debug.LogError("No Renderer on " + gameObject.name);
-            return;
+            case Condition.Flu:
+                rend.material.color = fluColor;
+                break;
+
+            case Condition.BrokenArm:
+                rend.material.color = brokenArmColor;
+                break;
+
+            case Condition.HeartPalpitation:
+                rend.material.color = heartColor;
+                break;
+
+            case Condition.Fever:
+                rend.material.color = feverColor;
+                break;
+
+            case Condition.Cold:
+                rend.material.color = coldColor;
+                break;
+
+            case Condition.Headache:
+                rend.material.color = headacheColor;
+                break;
+
+            case Condition.Infection:
+                rend.material.color = infectionColor;
+                break;
+
+            case Condition.Burn:
+                rend.material.color = burnColor;
+                break;
+
+            case Condition.Fracture:
+                rend.material.color = fractureColor;
+                break;
+
+            case Condition.Sprain:
+                rend.material.color = sprainColor;
+                break;
+
+            case Condition.Dehydration:
+                rend.material.color = dehydrationColor;
+                break;
+
+            case Condition.FoodPoisoning:
+                rend.material.color = foodPoisoningColor;
+                break;
+
+            default:
+                rend.material.color = Color.gray;
+                break;
+        }
+    }
+
+    void OnMouseDown()
+    {
+        if (cachedDoctorTool == null)
+        {
+            cachedDoctorTool = FindObjectOfType<DoctorTool>();
         }
 
-        if (currentCondition == Condition.Flu)
+        if (cachedDoctorTool != null)
         {
-            if (redNose != null) redNose.SetActive(true);
-            bodyRenderer.material.color = Color.red;
-        }
-        else if (currentCondition == Condition.BrokenArm)
-        {
-            if (cast != null) cast.SetActive(true);
-            bodyRenderer.material.color = Color.yellow;
-        }
-        else if (currentCondition == Condition.HeartPalpitation)
-        {
-            if (heartIcon != null) heartIcon.SetActive(true);
-            bodyRenderer.material.color = new Color(1f, 0.5f, 0.5f);
-        }
-        else
-        {
-            bodyRenderer.material.color = Color.white;
+            cachedDoctorTool.SelectPatient(this);
         }
     }
 }
