@@ -88,60 +88,27 @@ public class Patient : MonoBehaviour
     {
         if (rend == null) return;
 
+        Color c;
         switch (currentCondition)
         {
-            case Condition.Flu:
-                rend.material.color = fluColor;
-                break;
-
-            case Condition.BrokenArm:
-                rend.material.color = brokenArmColor;
-                break;
-
-            case Condition.HeartPalpitation:
-                rend.material.color = heartColor;
-                break;
-
-            case Condition.Fever:
-                rend.material.color = feverColor;
-                break;
-
-            case Condition.Cold:
-                rend.material.color = coldColor;
-                break;
-
-            case Condition.Headache:
-                rend.material.color = headacheColor;
-                break;
-
-            case Condition.Infection:
-                rend.material.color = infectionColor;
-                break;
-
-            case Condition.Burn:
-                rend.material.color = burnColor;
-                break;
-
-            case Condition.Fracture:
-                rend.material.color = fractureColor;
-                break;
-
-            case Condition.Sprain:
-                rend.material.color = sprainColor;
-                break;
-
-            case Condition.Dehydration:
-                rend.material.color = dehydrationColor;
-                break;
-
-            case Condition.FoodPoisoning:
-                rend.material.color = foodPoisoningColor;
-                break;
-
-            default:
-                rend.material.color = Color.gray;
-                break;
+            case Condition.Flu: c = fluColor; break;
+            case Condition.BrokenArm: c = brokenArmColor; break;
+            case Condition.HeartPalpitation: c = heartColor; break;
+            case Condition.Fever: c = feverColor; break;
+            case Condition.Cold: c = coldColor; break;
+            case Condition.Headache: c = headacheColor; break;
+            case Condition.Infection: c = infectionColor; break;
+            case Condition.Burn: c = burnColor; break;
+            case Condition.Fracture: c = fractureColor; break;
+            case Condition.Sprain: c = sprainColor; break;
+            case Condition.Dehydration: c = dehydrationColor; break;
+            case Condition.FoodPoisoning: c = foodPoisoningColor; break;
+            default: c = Color.gray; break;
         }
+
+        // Preserve whatever alpha was set externally (e.g. by CubeGridSpawner)
+        c.a = rend.material.color.a;
+        rend.material.color = c;
     }
 
     void OnMouseDown()

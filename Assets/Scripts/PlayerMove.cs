@@ -2,42 +2,47 @@
 
 public class PlayerMove : MonoBehaviour
 {
+    [Header("Movement")]
     public float moveSpeed = 2f;
-   // public Animator animatorK;
 
- /*   void Start()
+    [Header("Animation")]
+    public Animator animatorK;
+
+    void Start()
     {
+        // If you forget to drag the Animator in Inspector,
+        // this will try to find it on this same object.
         if (animatorK == null)
+        {
             animatorK = GetComponent<Animator>();
+        }
     }
- */
+
     void Update()
     {
         float moveX = 0f;
         float moveZ = 0f;
 
-        // Corrected direction
+        // Movement input
         if (Input.GetKey(KeyCode.W)) moveZ += 1f;
         if (Input.GetKey(KeyCode.S)) moveZ -= 1f;
         if (Input.GetKey(KeyCode.A)) moveX -= 1f;
         if (Input.GetKey(KeyCode.D)) moveX += 1f;
 
-        Vector3 moveDir = new Vector3(moveX, 0, moveZ).normalized;
+        // Build movement direction
+        Vector3 moveDir = new Vector3(moveX, 0f, moveZ).normalized;
+
+        // Move player
         transform.Translate(moveDir * moveSpeed * Time.deltaTime, Space.Self);
 
-        // 🔹 Simple animation trigger
-     /*   if (Input.GetKey(KeyCode.W))
+        // Check if player is moving
+        bool isMoving = moveDir.magnitude > 0f;
+
+        // Set Animator bools
+        if (animatorK != null)
         {
-            animatorK.Play("Walking");
+            animatorK.SetBool("Walk", isMoving);
+            animatorK.SetBool("Idle", !isMoving);
         }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            animatorK.Play("Walking Backwards");
-        }
-        else
-        {
-            animatorK.Play("Idle");
-        }
-     */
     }
 }

@@ -15,7 +15,11 @@ public class CubeGridSpawner : MonoBehaviour
     [Header("Start Position Offset")]
     public Vector3 startPosition = Vector3.zero;
 
-    private Vector3 cubeSize;
+    [Header("Transparency At Start")]
+    [Range(0f, 1f)]
+    public float startAlpha = 0f;
+
+    private Vector3 cubeSize = Vector3.one;
 
     void Start()
     {
@@ -25,11 +29,11 @@ public class CubeGridSpawner : MonoBehaviour
             return;
         }
 
-        Renderer rend = cubePrefab.GetComponent<Renderer>();
+        Renderer rend = cubePrefab.GetComponentInChildren<Renderer>();
 
         if (rend == null)
         {
-            Debug.LogError("Cube prefab has no Renderer.");
+            Debug.LogError("Cube prefab has no Renderer anywhere.");
             return;
         }
 
@@ -56,6 +60,8 @@ public class CubeGridSpawner : MonoBehaviour
 
                 GameObject newCube = Instantiate(cubePrefab, spawnPosition, spawnRotation);
 
+                MakeTransparent(newCube);
+
                 Patient patient = newCube.GetComponent<Patient>();
 
                 if (patient != null)
@@ -67,6 +73,36 @@ public class CubeGridSpawner : MonoBehaviour
                     patient.SetCondition(allConditions[randomIndex]);
                 }
             }
+        }
+    }
+
+    void MakeTransparent(GameObject obj)
+    {
+        Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
+
+        if (renderers.Length == 0)
+        {
+            Debug.LogWarning("Spawned object has no Renderers.");
+            return;
+        }
+
+        foreach (Renderer rend in renderers)
+        {
+            Material mat = new Material(rend.material);
+            rend.material = mat;
+
+            mat.SetFloat("_Mode", 3);
+            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetInt("_ZWrite", 0);
+            mat.DisableKeyword("_ALPHATEST_ON");
+            mat.EnableKeyword("_ALPHABLEND_ON");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            mat.renderQueue = 3000;
+
+            Color color = mat.color;
+            color.a = startAlpha;
+            mat.color = color;
         }
     }
 }
