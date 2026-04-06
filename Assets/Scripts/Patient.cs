@@ -58,6 +58,7 @@ public class Patient : MonoBehaviour
     public void SetCondition(Condition newCondition)
     {
         currentCondition = newCondition;
+        health = 100f;
         UpdateVisuals();
     }
 
@@ -66,7 +67,6 @@ public class Patient : MonoBehaviour
         health += amount;
         health = Mathf.Clamp(health, 0f, 100f);
 
-        // when fully healed, show white
         if (health >= 100f && rend != null)
         {
             rend.material.color = Color.white;
@@ -154,6 +154,51 @@ public class Patient : MonoBehaviour
         if (cachedDoctorTool != null)
         {
             cachedDoctorTool.SelectPatient(this);
+        }
+    }
+
+    public string GetSymptoms()
+    {
+        switch (currentCondition)
+        {
+            case Condition.Flu:
+                return "Coughing, chills";
+
+            case Condition.BrokenArm:
+                return "Pain, cannot move arm";
+
+            case Condition.HeartPalpitation:
+                return "Rapid heartbeat";
+
+            case Condition.Fever:
+                return "High temperature";
+
+            case Condition.Cold:
+                return "Sneezing, runny nose";
+
+            case Condition.Headache:
+                return "Head pain";
+
+            case Condition.Infection:
+                return "Redness, swelling";
+
+            case Condition.Burn:
+                return "Blisters, red skin";
+
+            case Condition.Fracture:
+                return "Severe pain, deformity";
+
+            case Condition.Sprain:
+                return "Swelling, pain";
+
+            case Condition.Dehydration:
+                return "Dry mouth, dizziness";
+
+            case Condition.FoodPoisoning:
+                return "Nausea, vomiting";
+
+            default:
+                return "Unknown";
         }
     }
 }

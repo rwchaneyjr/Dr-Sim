@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class DoctorTool : MonoBehaviour
 {
@@ -9,32 +10,42 @@ public class DoctorTool : MonoBehaviour
     public TMP_Text resultText;
 
     private Patient selectedPatient;
+    private Coroutine diagnosisCoroutine;
 
     public void SelectPatient(Patient patient)
     {
         selectedPatient = patient;
-        UpdateUI();
 
-        Debug.Log("Selected: " + patient.currentCondition);
+        if (diagnosisCoroutine != null)
+        {
+            StopCoroutine(diagnosisCoroutine);
+        }
+
+        // 🔥 SHOW SYMPTOMS FIRST
+        diagnosisText.text = "Symptoms: " + selectedPatient.GetSymptoms();
+        healthText.text = "Health: " + selectedPatient.health.ToString("F0");
+
+        diagnosisCoroutine = StartCoroutine(ShowDiagnosisAfterDelay(3f));
+    }
+
+    IEnumerator ShowDiagnosisAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (selectedPatient != null)
+        {
+            diagnosisText.text = "Diagnosis: " + selectedPatient.currentCondition.ToString();
+        }
     }
 
     void Update()
     {
         if (selectedPatient != null)
         {
-            UpdateUI();
+            healthText.text = "Health: " + selectedPatient.health.ToString("F0");
         }
     }
 
-    void UpdateUI()
-    {
-        if (selectedPatient == null) return;
-
-        diagnosisText.text = "Diagnosis: " + selectedPatient.currentCondition.ToString();
-        healthText.text = "Health: " + selectedPatient.health.ToString("F0");
-    }
-
-    // Main cure checker
     public void Cure(Patient.Condition cureType)
     {
         if (selectedPatient == null)
@@ -55,62 +66,15 @@ public class DoctorTool : MonoBehaviour
         }
     }
 
-    // 12 NO-ARGUMENT BUTTON FUNCTIONS
-
-    public void CureDehydration()
-    {
-        Cure(Patient.Condition.Dehydration);
-    }
-
-    public void CureInfection()
-    {
-        Cure(Patient.Condition.Infection);
-    }
-
-    public void CureFever()
-    {
-        Cure(Patient.Condition.Fever);
-    }
-
-    public void CureBurn()
-    {
-        Cure(Patient.Condition.Burn);
-    }
-
-    public void CureSprain()
-    {
-        Cure(Patient.Condition.Sprain);
-    }
-
-    public void CureHeartPalpitation()
-    {
-        Cure(Patient.Condition.HeartPalpitation);
-    }
-
-    public void CureHeadache()
-    {
-        Cure(Patient.Condition.Headache);
-    }
-
-    public void CureFoodPoisoning()
-    {
-        Cure(Patient.Condition.FoodPoisoning);
-    }
-
-    public void CureCold()
-    {
-        Cure(Patient.Condition.Cold);
-    }
-
-    public void CureBrokenArm()
-    {
-        Cure(Patient.Condition.BrokenArm);
-    }
-
-    public void CureFlu()
-    {
-        Cure(Patient.Condition.Flu);
-    }
-
-    
+    public void CureDehydration() { Cure(Patient.Condition.Dehydration); }
+    public void CureInfection() { Cure(Patient.Condition.Infection); }
+    public void CureFever() { Cure(Patient.Condition.Fever); }
+    public void CureBurn() { Cure(Patient.Condition.Burn); }
+    public void CureSprain() { Cure(Patient.Condition.Sprain); }
+    public void CureHeartPalpitation() { Cure(Patient.Condition.HeartPalpitation); }
+    public void CureHeadache() { Cure(Patient.Condition.Headache); }
+    public void CureFoodPoisoning() { Cure(Patient.Condition.FoodPoisoning); }
+    public void CureCold() { Cure(Patient.Condition.Cold); }
+    public void CureBrokenArm() { Cure(Patient.Condition.BrokenArm); }
+    public void CureFlu() { Cure(Patient.Condition.Flu); }
 }
