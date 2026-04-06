@@ -17,7 +17,7 @@ public class CubeGridSpawner : MonoBehaviour
 
     [Header("Transparency At Start")]
     [Range(0f, 1f)]
-    public float startAlpha = 0f;
+    public float startAlpha = .7f;
 
     private Vector3 cubeSize = Vector3.one;
 
@@ -91,7 +91,7 @@ public class CubeGridSpawner : MonoBehaviour
             Material mat = new Material(rend.material);
             rend.material = mat;
 
-            mat.SetFloat("_Mode", 3);
+            mat.SetFloat("_Mode", 0);
             mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
             mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             mat.SetInt("_ZWrite", 0);

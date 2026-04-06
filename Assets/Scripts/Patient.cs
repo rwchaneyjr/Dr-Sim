@@ -23,17 +23,17 @@ public class Patient : MonoBehaviour
     public float health = 100f;
 
     [Header("Colors")]
-    public Color fluColor = new Color(0.4f, 1f, 0.4f);          // green
-    public Color brokenArmColor = Color.yellow;                 // yellow
-    public Color heartColor = Color.red;                        // red
-    public Color feverColor = new Color(1f, 0.5f, 0f);          // orange
-    public Color coldColor = Color.cyan;                        // cyan
-    public Color headacheColor = new Color(0.7f, 0.3f, 1f);     // purple
-    public Color infectionColor = new Color(0.5f, 1f, 0.5f);    // pale green
-    public Color burnColor = new Color(1f, 0.3f, 0.1f);         // hot orange/red
-    public Color fractureColor = new Color(1f, 1f, 0.6f);       // light yellow
-    public Color sprainColor = new Color(0.2f, 0.8f, 1f);       // blue-cyan
-    public Color dehydrationColor = new Color(0.3f, 0.5f, 1f);  // blue
+    public Color fluColor = new Color(0.4f, 1f, 0.4f);
+    public Color brokenArmColor = Color.yellow;
+    public Color heartColor = Color.red;
+    public Color feverColor = new Color(1f, 0.5f, 0f);
+    public Color coldColor = Color.cyan;
+    public Color headacheColor = new Color(0.7f, 0.3f, 1f);
+    public Color infectionColor = new Color(0.5f, 1f, 0.5f);
+    public Color burnColor = new Color(1f, 0.3f, 0.1f);
+    public Color fractureColor = new Color(1f, 1f, 0.6f);
+    public Color sprainColor = new Color(0.2f, 0.8f, 1f);
+    public Color dehydrationColor = new Color(0.3f, 0.5f, 1f);
     public Color foodPoisoningColor = new Color(0.2f, 0.8f, 0.2f);
 
     private Renderer rend;
@@ -59,6 +59,9 @@ public class Patient : MonoBehaviour
     {
         currentCondition = newCondition;
         health = 100f;
+
+        DoctorTool.currentResultMessage = "New patient needs treatment.";
+
         UpdateVisuals();
     }
 
@@ -67,9 +70,16 @@ public class Patient : MonoBehaviour
         health += amount;
         health = Mathf.Clamp(health, 0f, 100f);
 
-        if (health >= 100f && rend != null)
+        if (health >= 100f)
         {
-            rend.material.color = Color.white;
+            health = 100f;
+
+            if (rend != null)
+            {
+                Color healedColor = Color.white;
+                healedColor.a = rend.material.color.a;
+                rend.material.color = healedColor;
+            }
         }
     }
 
@@ -80,7 +90,9 @@ public class Patient : MonoBehaviour
 
         if (rend != null)
         {
-            rend.material.color = Color.black;
+            Color badColor = Color.black;
+            badColor.a = rend.material.color.a;
+            rend.material.color = badColor;
         }
     }
 
@@ -89,6 +101,7 @@ public class Patient : MonoBehaviour
         if (rend == null) return;
 
         Color c;
+
         switch (currentCondition)
         {
             case Condition.Flu: c = fluColor; break;
@@ -106,7 +119,6 @@ public class Patient : MonoBehaviour
             default: c = Color.gray; break;
         }
 
-        // Preserve whatever alpha was set externally (e.g. by CubeGridSpawner)
         c.a = rend.material.color.a;
         rend.material.color = c;
     }
@@ -121,6 +133,7 @@ public class Patient : MonoBehaviour
         if (cachedDoctorTool != null)
         {
             cachedDoctorTool.SelectPatient(this);
+            DoctorTool.currentResultMessage = ""; // ✅ FIXED
         }
     }
 

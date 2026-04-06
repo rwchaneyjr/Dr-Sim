@@ -9,21 +9,48 @@ public class DoctorTool : MonoBehaviour
     public TMP_Text healthText;
     public TMP_Text resultText;
 
+    [Header("Treatment UI")]
+    public GameObject treatmentPanel;
+
+    // STATIC result message shared between scripts
+    public static string currentResultMessage = "";
+
     private Patient selectedPatient;
     private Coroutine diagnosisCoroutine;
+
+    void Start()
+    {
+        if (treatmentPanel != null)
+        {
+            treatmentPanel.SetActive(false);
+        }
+
+        diagnosisText.text = "";
+        healthText.text = "";
+        resultText.text = "";
+        currentResultMessage = "";
+    }
 
     public void SelectPatient(Patient patient)
     {
         selectedPatient = patient;
 
+        if (treatmentPanel != null)
+        {
+            treatmentPanel.SetActive(true);
+        }
+
         if (diagnosisCoroutine != null)
         {
             StopCoroutine(diagnosisCoroutine);
+            diagnosisCoroutine = null;
         }
 
-        // 🔥 SHOW SYMPTOMS FIRST
         diagnosisText.text = "Symptoms: " + selectedPatient.GetSymptoms();
         healthText.text = "Health: " + selectedPatient.health.ToString("F0");
+
+        currentResultMessage = "";
+        resultText.text = currentResultMessage;
 
         diagnosisCoroutine = StartCoroutine(ShowDiagnosisAfterDelay(3f));
     }
@@ -44,25 +71,52 @@ public class DoctorTool : MonoBehaviour
         {
             healthText.text = "Health: " + selectedPatient.health.ToString("F0");
         }
+
+        // Always show the shared static message
+        if (resultText != null)
+        {
+            resultText.text = currentResultMessage;
+        }
+    }
+
+    public void ClearUI()
+    {
+        selectedPatient = null;
+
+        if (diagnosisCoroutine != null)
+        {
+            StopCoroutine(diagnosisCoroutine);
+            diagnosisCoroutine = null;
+        }
+
+        diagnosisText.text = "";
+        healthText.text = "";
+        currentResultMessage = "";
+        resultText.text = "";
+
+        if (treatmentPanel != null)
+        {
+            treatmentPanel.SetActive(false);
+        }
     }
 
     public void Cure(Patient.Condition cureType)
     {
         if (selectedPatient == null)
         {
-            resultText.text = "Select a patient first!";
+            currentResultMessage = "Select a patient first!";
             return;
         }
 
         if (selectedPatient.currentCondition == cureType)
         {
-            selectedPatient.Heal(30f);
-            resultText.text = "Correct cure!";
+            selectedPatient.Heal(100f);
+            currentResultMessage = "Correct cure!";
         }
         else
         {
             selectedPatient.AdverseReaction();
-            resultText.text = "Wrong cure!";
+            currentResultMessage = "Wrong cure!";
         }
     }
 

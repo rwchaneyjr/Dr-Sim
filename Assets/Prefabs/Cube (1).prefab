@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.24, y: 0.99, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -123,7 +123,7 @@ MonoBehaviour:
   sickColor: {r: 1, g: 0, b: 0, a: 1}
   recoveryColor: {r: 0, g: 0, b: 1, a: 1}
   healedColor: {r: 0, g: 1, b: 0, a: 1}
-  alpha: 0.052
+  alpha: 0.408
   isSick: 0
 --- !u!114 &4226290827429870234
 MonoBehaviour:

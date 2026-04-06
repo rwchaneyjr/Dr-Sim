@@ -35,14 +35,25 @@ public class PlayerMove : MonoBehaviour
         // Move player
         transform.Translate(moveDir * moveSpeed * Time.deltaTime, Space.Self);
 
-        // Check if player is moving
+        // Animation checks
+        bool pressingS = Input.GetKey(KeyCode.S);
         bool isMoving = moveDir.magnitude > 0f;
+
+        // Walk forward or sideways
+        bool walkBool = isMoving && !pressingS;
+
+        // Walk backward ONLY if actually moving backward
+        bool walkBackBool = isMoving && pressingS;
+
+        // Idle when not moving
+        bool idleBool = !isMoving;
 
         // Set Animator bools
         if (animatorK != null)
         {
-            animatorK.SetBool("Walk", isMoving);
-            animatorK.SetBool("Idle", !isMoving);
+            animatorK.SetBool("Walk", walkBool);
+            animatorK.SetBool("WalkBack", walkBackBool);
+            animatorK.SetBool("Idle", idleBool);
         }
     }
 }

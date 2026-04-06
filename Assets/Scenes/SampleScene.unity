@@ -415,7 +415,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.43
+      value: -5.55
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -462,14 +462,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: d7eaaffa80d44384caa7633148c57148, type: 2}
     - target: {fileID: 5866666021909216657, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-        'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
-        'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform 'mixamorig:RightArm'\n\tTransform
-        'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform 'mixamorig:RightHandIndex3'\n\tand
-        more ...\n\tFrom animation clip 'Idle'"
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -489,7 +491,7 @@ PrefabInstance:
       addedObject: {fileID: 644495140}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 644495141}
+      addedObject: {fileID: 644495143}
   m_SourcePrefab: {fileID: 100100000, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
 --- !u!1 &46948894
 GameObject:
@@ -927,7 +929,7 @@ Transform:
   m_GameObject: {fileID: 309712248}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 106.6, y: -5.48, z: 6.1}
+  m_LocalPosition: {x: 11.4, y: -6, z: 32.1}
   m_LocalScale: {x: 200, y: 1, z: 200}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -946,10 +948,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 8594363332944409827, guid: f9fd7ccfb493c2545a3a26eed220bb11, type: 3}
-  width: 8
-  height: 8
+  width: 3
+  height: 3
   spacingMultiplier: 3
   startPosition: {x: 0, y: 0, z: 0}
+  startAlpha: 0
 --- !u!114 &309712254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1131,7 +1134,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -141, y: 186}
+  m_AnchoredPosition: {x: 347, y: 59}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &370067691
@@ -1926,6 +1929,7 @@ MonoBehaviour:
   diagnosisText: {fileID: 877070904}
   healthText: {fileID: 1055789183}
   resultText: {fileID: 46948896}
+  treatmentPanel: {fileID: 1336678957}
 --- !u!114 &644495138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1938,7 +1942,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39a3755c8c099a4097faad59c3cf313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnTileGreen: 1
 --- !u!114 &644495139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1980,8 +1983,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &644495141
-MeshCollider:
+--- !u!4 &644495142 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
+  m_PrefabInstance: {fileID: 45893028}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &644495143
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1998,10 +2006,11 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2.01539
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.93673193, z: 0}
 --- !u!1 &650281133
 GameObject:
   m_ObjectHideFlags: 0
@@ -2884,13 +2893,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5116181, y: -0, z: -0, w: 0.85921305}
-  m_LocalPosition: {x: 7.02, y: 1.5, z: -5.1}
+  m_LocalRotation: {x: 0.19619487, y: -0, z: -0, w: 0.980565}
+  m_LocalPosition: {x: 8.6, y: 5.1, z: -6.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 61.543, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 22.629, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2903,7 +2912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7173d32f48a4de1468317b30182803a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 644495142}
   offset: {x: 0, y: 10, z: -3}
 --- !u!1 &1044561910
 GameObject:
@@ -3835,6 +3844,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1724198293}
   - component: {fileID: 1724198292}
+  - component: {fileID: 1724198294}
   m_Layer: 0
   m_Name: OverheadCamera
   m_TagString: Untagged
@@ -3908,6 +3918,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 81.646, y: 0, z: 0}
+--- !u!114 &1724198294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724198290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965b7f7e1484463469159fb508b4698c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overheadCamera: {fileID: 1724198292}
+  closeUpCamera: {fileID: 963194227}
 --- !u!1 &1747690174
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,29 +1,44 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DoctorHealTile : MonoBehaviour
 {
-    [Header("If true, touched tiles turn green. If false, they turn blue.")]
-    public bool turnTileGreen = true;
+    private DoctorTool doctorTool;
+
+    void Start()
+    {
+        doctorTool = FindObjectOfType<DoctorTool>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Doctor touched: " + other.gameObject.name);
+        Debug.Log("ENTER TRIGGER: " + other.name);
 
-        HealthTile tile = other.GetComponent<HealthTile>();
+        Patient patient = other.GetComponent<Patient>();
 
-        if (tile != null)
+        if (patient == null)
         {
-            if (tile.isSick)
-            {
-                if (turnTileGreen)
-                {
-                    tile.HealTile();
-                }
-                else
-                {
-                    tile.MakeRecoveryBlue();
-                }
-            }
+            patient = other.GetComponentInParent<Patient>();
+        }
+
+        if (patient != null && doctorTool != null)
+        {
+            Debug.Log("PATIENT FOUND");
+            doctorTool.SelectPatient(patient);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Patient patient = other.GetComponent<Patient>();
+
+        if (patient == null)
+        {
+            patient = other.GetComponentInParent<Patient>();
+        }
+
+        if (patient != null && doctorTool != null)
+        {
+            doctorTool.ClearUI();
         }
     }
 }
