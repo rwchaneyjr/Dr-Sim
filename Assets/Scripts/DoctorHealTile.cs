@@ -2,28 +2,34 @@
 
 public class DoctorHealTile : MonoBehaviour
 {
-    private DoctorTool doctorTool;
+    public GameObject doctorCanvas;   // drag your Canvas here
+    public DoctorTool doctorTool;     // drag your DoctorTool object here
 
-    void Start()
+    private void Start()
     {
-        doctorTool = FindObjectOfType<DoctorTool>();
+        if (doctorCanvas != null)
+        {
+            doctorCanvas.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("ENTER TRIGGER: " + other.name);
-
         Patient patient = other.GetComponent<Patient>();
 
-        if (patient == null)
+        if (patient != null)
         {
-            patient = other.GetComponentInParent<Patient>();
-        }
+            Debug.Log("PATIENT FOUND: " + other.name);
 
-        if (patient != null && doctorTool != null)
-        {
-            Debug.Log("PATIENT FOUND");
-            doctorTool.SelectPatient(patient);
+            if (doctorCanvas != null)
+            {
+                doctorCanvas.SetActive(true);
+            }
+
+            if (doctorTool != null)
+            {
+                doctorTool.SelectPatient(patient);
+            }
         }
     }
 
@@ -31,14 +37,17 @@ public class DoctorHealTile : MonoBehaviour
     {
         Patient patient = other.GetComponent<Patient>();
 
-        if (patient == null)
+        if (patient != null)
         {
-            patient = other.GetComponentInParent<Patient>();
-        }
+            if (doctorCanvas != null)
+            {
+                doctorCanvas.SetActive(false);
+            }
 
-        if (patient != null && doctorTool != null)
-        {
-            doctorTool.ClearUI();
+            if (doctorTool != null)
+            {
+                doctorTool.ClearUI();
+            }
         }
     }
 }

@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77faca6305ce4b1438c8e12a861f06e5, type: 2}
+  - {fileID: 2100000, guid: d12c176bc95077342ad7a4dc4e9ec6a8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,7 +123,7 @@ MonoBehaviour:
   sickColor: {r: 1, g: 0, b: 0, a: 1}
   recoveryColor: {r: 0, g: 0, b: 1, a: 1}
   healedColor: {r: 0, g: 1, b: 0, a: 1}
-  alpha: 0.408
+  alpha: 0.319
   isSick: 0
 --- !u!114 &4226290827429870234
 MonoBehaviour:
@@ -137,7 +137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39a3755c8c099a4097faad59c3cf313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnTileGreen: 1
+  doctorCanvas: {fileID: 0}
+  doctorTool: {fileID: 0}
 --- !u!114 &4542956430640644613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,15 +153,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentCondition: 0
   health: 100
-  fluColor: {r: 0.4, g: 1, b: 0.4, a: 1}
-  brokenArmColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  heartColor: {r: 1, g: 0, b: 0, a: 1}
-  feverColor: {r: 1, g: 0.5, b: 0, a: 1}
-  coldColor: {r: 0, g: 1, b: 1, a: 1}
-  headacheColor: {r: 0.7, g: 0.3, b: 1, a: 1}
-  infectionColor: {r: 0.5, g: 1, b: 0.5, a: 1}
-  burnColor: {r: 1, g: 0.3, b: 0.1, a: 1}
-  fractureColor: {r: 1, g: 1, b: 0.6, a: 1}
-  sprainColor: {r: 0.2, g: 0.8, b: 1, a: 1}
-  dehydrationColor: {r: 0.3, g: 0.5, b: 1, a: 1}
-  foodPoisoningColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}

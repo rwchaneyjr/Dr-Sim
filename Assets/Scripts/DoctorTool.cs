@@ -9,36 +9,48 @@ public class DoctorTool : MonoBehaviour
     public TMP_Text healthText;
     public TMP_Text resultText;
 
-    [Header("Treatment UI")]
-    public GameObject treatmentPanel;
-
-    // STATIC result message shared between scripts
-    public static string currentResultMessage = "";
+    [Header("Start Instructions")]
+    public GameObject doctorCanvas;
+    public TMP_Text instructionText;
+    public float instructionDuration = 4f;
 
     private Patient selectedPatient;
     private Coroutine diagnosisCoroutine;
 
     void Start()
     {
-        if (treatmentPanel != null)
+        if (doctorCanvas != null)
+            doctorCanvas.SetActive(true);
+
+        if (instructionText != null)
+            instructionText.text = "Use W A S D  - C Key to Toggle Camera";
+
+        if (diagnosisText != null)
+            diagnosisText.text = "";
+
+        if (healthText != null)
+            healthText.text = "";
+
+        if (resultText != null)
         {
-            treatmentPanel.SetActive(false);
+            resultText.text = "";
+            resultText.color = Color.white;
         }
 
-        diagnosisText.text = "";
-        healthText.text = "";
-        resultText.text = "";
-        currentResultMessage = "";
+        StartCoroutine(HideInstruction());
+    }
+
+    IEnumerator HideInstruction()
+    {
+        yield return new WaitForSeconds(instructionDuration);
+
+        if (instructionText != null)
+            instructionText.text = "";
     }
 
     public void SelectPatient(Patient patient)
     {
         selectedPatient = patient;
-
-        if (treatmentPanel != null)
-        {
-            treatmentPanel.SetActive(true);
-        }
 
         if (diagnosisCoroutine != null)
         {
@@ -46,11 +58,17 @@ public class DoctorTool : MonoBehaviour
             diagnosisCoroutine = null;
         }
 
-        diagnosisText.text = "Symptoms: " + selectedPatient.GetSymptoms();
-        healthText.text = "Health: " + selectedPatient.health.ToString("F0");
+        if (diagnosisText != null)
+            diagnosisText.text = "Symptoms: " + selectedPatient.GetSymptoms();
 
-        currentResultMessage = "";
-        resultText.text = currentResultMessage;
+        if (healthText != null)
+            healthText.text = "Health: " + selectedPatient.health.ToString("F0");
+
+        if (resultText != null)
+        {
+            resultText.text = "";
+            resultText.color = Color.white;
+        }
 
         diagnosisCoroutine = StartCoroutine(ShowDiagnosisAfterDelay(3f));
     }
@@ -59,7 +77,7 @@ public class DoctorTool : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        if (selectedPatient != null)
+        if (selectedPatient != null && diagnosisText != null)
         {
             diagnosisText.text = "Diagnosis: " + selectedPatient.currentCondition.ToString();
         }
@@ -67,15 +85,9 @@ public class DoctorTool : MonoBehaviour
 
     void Update()
     {
-        if (selectedPatient != null)
+        if (selectedPatient != null && healthText != null)
         {
             healthText.text = "Health: " + selectedPatient.health.ToString("F0");
-        }
-
-        // Always show the shared static message
-        if (resultText != null)
-        {
-            resultText.text = currentResultMessage;
         }
     }
 
@@ -89,14 +101,12 @@ public class DoctorTool : MonoBehaviour
             diagnosisCoroutine = null;
         }
 
-        diagnosisText.text = "";
-        healthText.text = "";
-        currentResultMessage = "";
-        resultText.text = "";
-
-        if (treatmentPanel != null)
+        if (diagnosisText != null) diagnosisText.text = "";
+        if (healthText != null) healthText.text = "";
+        if (resultText != null)
         {
-            treatmentPanel.SetActive(false);
+            resultText.text = "";
+            resultText.color = Color.white;
         }
     }
 
@@ -104,19 +114,45 @@ public class DoctorTool : MonoBehaviour
     {
         if (selectedPatient == null)
         {
-            currentResultMessage = "Select a patient first!";
+            if (resultText != null)
+            {
+                resultText.text = "Select a cure!";
+                resultText.color = Color.white;
+            }
             return;
         }
 
+        Renderer patientRenderer = selectedPatient.GetComponent<Renderer>();
+
         if (selectedPatient.currentCondition == cureType)
         {
-            selectedPatient.Heal(100f);
-            currentResultMessage = "Correct cure!";
+            selectedPatient.Heal(30f);
+
+            if (resultText != null)
+            {
+                resultText.text = "Correct cure!";
+                resultText.color = Color.green;
+            }
+
+            if (patientRenderer != null)
+            {
+                patientRenderer.material.color = Color.green;
+            }
         }
         else
         {
             selectedPatient.AdverseReaction();
-            currentResultMessage = "Wrong cure!";
+
+            if (resultText != null)
+            {
+                resultText.text = "Wrong cure!";
+                resultText.color = Color.red;
+            }
+
+            if (patientRenderer != null)
+            {
+                patientRenderer.material.color = Color.black;
+            }
         }
     }
 
@@ -130,5 +166,6 @@ public class DoctorTool : MonoBehaviour
     public void CureFoodPoisoning() { Cure(Patient.Condition.FoodPoisoning); }
     public void CureCold() { Cure(Patient.Condition.Cold); }
     public void CureBrokenArm() { Cure(Patient.Condition.BrokenArm); }
+    public void CureToothAche() { Cure(Patient.Condition.ToothAche); }
     public void CureFlu() { Cure(Patient.Condition.Flu); }
 }

@@ -339,7 +339,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644495137}
         m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
         m_MethodName: CureBurn
         m_Mode: 1
@@ -411,15 +411,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.49
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.55
+      value: -5.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5
+      value: -28.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -778,7 +778,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644495137}
         m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
         m_MethodName: CureDehydration
         m_Mode: 1
@@ -929,7 +929,7 @@ Transform:
   m_GameObject: {fileID: 309712248}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.4, y: -6, z: 32.1}
+  m_LocalPosition: {x: 11.4, y: -4.3, z: 32.1}
   m_LocalScale: {x: 200, y: 1, z: 200}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -947,12 +947,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0afb2c92afbc64b4ca3a212676463905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubePrefab: {fileID: 8594363332944409827, guid: f9fd7ccfb493c2545a3a26eed220bb11, type: 3}
+  cubePrefab: {fileID: 5012267112865926924, guid: 6d69e59fec2d8b945be80c3e20d102a2, type: 3}
+  patientPrefab: {fileID: 5911288679442752469, guid: 4ba015fb178305b4783dd84207874fb2, type: 3}
   width: 3
   height: 3
-  spacingMultiplier: 3
+  spacingMultiplier: 1.6
   startPosition: {x: 0, y: 0, z: 0}
-  startAlpha: 0
+  patientOffset: {x: 0, y: 0, z: 0}
+  patientScale: 0.01
+  shrinkMultiplier: 0.4
+  patientRotation: {x: -90, y: 90, z: 90}
 --- !u!114 &309712254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,7 +1054,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644495137}
         m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
         m_MethodName: CureHeadache
         m_Mode: 1
@@ -1134,7 +1138,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 347, y: 59}
+  m_AnchoredPosition: {x: 89, y: -23}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &370067691
@@ -1929,7 +1933,9 @@ MonoBehaviour:
   diagnosisText: {fileID: 877070904}
   healthText: {fileID: 1055789183}
   resultText: {fileID: 46948896}
-  treatmentPanel: {fileID: 1336678957}
+  doctorCanvas: {fileID: 1336678957}
+  instructionText: {fileID: 1545436637}
+  instructionDuration: 1.5
 --- !u!114 &644495138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1942,6 +1948,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39a3755c8c099a4097faad59c3cf313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doctorCanvas: {fileID: 1336678957}
+  doctorTool: {fileID: 644495137}
 --- !u!114 &644495139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1954,7 +1962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3999612373a0b0e458d7b9daecc984f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 9
   animatorK: {fileID: 644495135}
 --- !u!54 &644495140
 Rigidbody:
@@ -1983,11 +1991,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!4 &644495142 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
-  m_PrefabInstance: {fileID: 45893028}
-  m_PrefabAsset: {fileID: 0}
 --- !u!136 &644495143
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2011,6 +2014,11 @@ CapsuleCollider:
   m_Height: 2.01539
   m_Direction: 1
   m_Center: {x: 0, y: 0.93673193, z: 0}
+--- !u!4 &644495144 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d9cace5b04440484fa9814c44dfc34e4, type: 3}
+  m_PrefabInstance: {fileID: 45893028}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &650281133
 GameObject:
   m_ObjectHideFlags: 0
@@ -2094,7 +2102,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644495137}
         m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
         m_MethodName: CureSprain
         m_Mode: 1
@@ -2227,7 +2235,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644495137}
         m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
         m_MethodName: CureCold
         m_Mode: 1
@@ -2368,7 +2376,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1217453552}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &730732632
@@ -2454,7 +2463,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644495137}
         m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
         m_MethodName: CureHeartPalpitation
         m_Mode: 1
@@ -2514,6 +2523,7 @@ GameObject:
   m_Component:
   - component: {fileID: 741967934}
   - component: {fileID: 741967935}
+  - component: {fileID: 741967936}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2548,6 +2558,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f69af1c0eaa284e9e80b57f6ebda28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &741967936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741967933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965b7f7e1484463469159fb508b4698c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overheadCamera: {fileID: 1724198292}
+  closeUpCamera: {fileID: 963194227}
 --- !u!1 &794776697
 GameObject:
   m_ObjectHideFlags: 0
@@ -2893,13 +2917,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19619487, y: -0, z: -0, w: 0.980565}
-  m_LocalPosition: {x: 8.6, y: 5.1, z: -6.3}
+  m_LocalRotation: {x: -0.04256175, y: -0, z: -0, w: 0.9990939}
+  m_LocalPosition: {x: -8.01, y: 0.6, z: -29.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 22.629, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -4.879, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2912,8 +2936,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7173d32f48a4de1468317b30182803a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 644495142}
-  offset: {x: 0, y: 10, z: -3}
+  target: {fileID: 644495144}
+  offset: {x: 0, y: 3, z: 0}
 --- !u!1 &1044561910
 GameObject:
   m_ObjectHideFlags: 0
@@ -3182,6 +3206,108 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1055789181}
   m_CullTransparentMesh: 1
+--- !u!1 &1217453551
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1217453552}
+  - component: {fileID: 1217453555}
+  - component: {fileID: 1217453554}
+  - component: {fileID: 1217453553}
+  m_Layer: 0
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1217453552
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217453551}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1545436639}
+  m_Father: {fileID: 705507995}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &1217453553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217453551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1217453554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217453551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &1217453555
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217453551}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &1336678957
 GameObject:
   m_ObjectHideFlags: 0
@@ -3299,6 +3425,140 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1545436636
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1545436639}
+  - component: {fileID: 1545436638}
+  - component: {fileID: 1545436637}
+  m_Layer: 0
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1545436637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545436636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: New Text
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: -202.69067, y: 0, z: 16.143795, w: -79.67781}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1545436638
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545436636}
+  m_CullTransparentMesh: 1
+--- !u!224 &1545436639
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545436636}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -101}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1217453552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 117, y: 61.63405}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1551561953
 GameObject:
   m_ObjectHideFlags: 0
@@ -3650,7 +3910,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644495137}
         m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
         m_MethodName: CureBrokenArm
         m_Mode: 1
@@ -4015,7 +4275,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644495137}
         m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
         m_MethodName: CureFlu
         m_Mode: 1
@@ -4047,7 +4307,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6a7c5868f5021fd49b70844df3e28000, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fd77a27223826264eac42744f033b81b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4148,7 +4408,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644495137}
         m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
         m_MethodName: CureInfection
         m_Mode: 1
@@ -4282,9 +4542,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 644495137}
         m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
-        m_MethodName: CureSprain
+        m_MethodName: CureToothAche
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4314,7 +4574,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bc2a974fe978d6f44884a5889289e7e8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 60c8ebee172dd294caf9700703b9c05a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4548,7 +4808,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1970912991}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 644495137}
+        m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
+        m_MethodName: CureFever
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1970912991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4669,7 +4941,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1973059110}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 644495137}
+        m_TargetAssemblyTypeName: DoctorTool, Assembly-CSharp
+        m_MethodName: CureFoodPoisoning
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1973059110
 MonoBehaviour:
   m_ObjectHideFlags: 0

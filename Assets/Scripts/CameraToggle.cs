@@ -6,7 +6,7 @@ public class CameraToggle : MonoBehaviour
     public Camera overheadCamera;
     public Camera closeUpCamera;
 
-    private bool usingOverhead = true;
+    private bool usingOverhead = false;
 
     void Start()
     {
@@ -18,8 +18,8 @@ public class CameraToggle : MonoBehaviour
         }
 
         // Start with overhead camera on
-        overheadCamera.enabled = true;
-        closeUpCamera.enabled = false;
+        overheadCamera.enabled = false;
+        closeUpCamera.enabled = true;
     }
 
     void Update()
@@ -28,8 +28,8 @@ public class CameraToggle : MonoBehaviour
         {
             usingOverhead = !usingOverhead;
 
-            overheadCamera.enabled = usingOverhead;
-            closeUpCamera.enabled = !usingOverhead;
+            overheadCamera.enabled = !usingOverhead;
+            closeUpCamera.enabled = usingOverhead;
         }
     }
 }
