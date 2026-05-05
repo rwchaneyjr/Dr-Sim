@@ -16,6 +16,9 @@ public class DoctorTool : MonoBehaviour
 
     [Header("Result Typewriter")]
     public float resultCharacterDelay = 0.04f;
+    public Color correctResultColor = Color.yellow;
+    public Color wrongResultColor = Color.red;
+    public Color neutralResultColor = Color.white;
 
     private Patient selectedPatient;
     private Coroutine diagnosisCoroutine;
@@ -38,7 +41,7 @@ public class DoctorTool : MonoBehaviour
         if (resultText != null)
         {
             ClearResultText();
-            resultText.color = Color.white;
+            resultText.color = neutralResultColor;
         }
 
         StartCoroutine(HideInstruction());
@@ -74,7 +77,7 @@ public class DoctorTool : MonoBehaviour
         if (resultText != null)
         {
             ClearResultText();
-            resultText.color = Color.white;
+            resultText.color = neutralResultColor;
         }
 
         diagnosisCoroutine = StartCoroutine(ShowDiagnosisAfterDelay(3f));
@@ -113,7 +116,7 @@ public class DoctorTool : MonoBehaviour
         if (resultText != null)
         {
             ClearResultText();
-            resultText.color = Color.white;
+            resultText.color = neutralResultColor;
         }
 
         if (doctorCanvas != null)
@@ -134,7 +137,7 @@ public class DoctorTool : MonoBehaviour
         {
             if (resultText != null)
             {
-                ShowResult("Select a patient first!", Color.white);
+                ShowResult("Select a patient first!", neutralResultColor);
             }
             return;
         }
@@ -147,7 +150,7 @@ public class DoctorTool : MonoBehaviour
 
             if (resultText != null)
             {
-                ShowResult("Correct cure!", Color.green);
+                ShowResult("Correct cure!", correctResultColor);
             }
 
             if (patientRenderer != null)
@@ -161,7 +164,7 @@ public class DoctorTool : MonoBehaviour
 
             if (resultText != null)
             {
-                ShowResult("Wrong cure!", Color.red);
+                ShowResult("Wrong cure!", wrongResultColor);
             }
 
             if (patientRenderer != null)
