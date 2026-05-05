@@ -4,27 +4,35 @@ public class DoctorHealTile : MonoBehaviour
 {
     public GameObject doctorCanvas;   // drag your Canvas here
     public DoctorTool doctorTool;     // drag your DoctorTool object here
+    private Patient activePatient;
+
+    private void Awake()
+    {
+        if (doctorTool == null)
+        {
+            doctorTool = FindObjectOfType<DoctorTool>();
+        }
+
+        if (doctorCanvas == null && doctorTool != null)
+        {
+            doctorCanvas = doctorTool.doctorCanvas;
+        }
+    }
 
     private void Start()
     {
-        if (doctorCanvas != null)
-        {
-            doctorCanvas.SetActive(false);
-        }
+        SetCanvasVisible(false);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Patient patient = other.GetComponent<Patient>();
+        Patient patient = FindTriggeredPatient(other);
 
         if (patient != null)
         {
             Debug.Log("PATIENT FOUND: " + other.name);
 
-            if (doctorCanvas != null)
-            {
-                doctorCanvas.SetActive(true);
-            }
+            activePatient = patient;
 
             if (doctorTool != null)
             {
@@ -35,19 +43,56 @@ public class DoctorHealTile : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Patient patient = other.GetComponent<Patient>();
+        Patient patient = FindTriggeredPatient(other);
 
-        if (patient != null)
+        if (patient != null && (activePatient == null || patient == activePatient))
         {
-            if (doctorCanvas != null)
-            {
-                doctorCanvas.SetActive(false);
-            }
+            activePatient = null;
 
             if (doctorTool != null)
             {
-                doctorTool.ClearUI();
+                doctorTool.ClearPatient(patient);
             }
+        }
+    }
+
+    private Patient FindTriggeredPatient(Collider other)
+    {
+        Patient patient = other.GetComponent<Patient>();
+
+        if (patient == null)
+        {
+            patient = other.GetComponentInParent<Patient>();
+        }
+
+        if (patient == null)
+        {
+            patient = other.GetComponentInChildren<Patient>();
+        }
+
+        if (patient == null)
+        {
+            patient = GetComponent<Patient>();
+        }
+
+        if (patient == null)
+        {
+            patient = GetComponentInParent<Patient>();
+        }
+
+        if (patient == null)
+        {
+            patient = GetComponentInChildren<Patient>();
+        }
+
+        return patient;
+    }
+
+    private void SetCanvasVisible(bool visible)
+    {
+        if (doctorCanvas != null)
+        {
+            doctorCanvas.SetActive(visible);
         }
     }
 }

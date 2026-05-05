@@ -14,8 +14,12 @@ public class DoctorTool : MonoBehaviour
     public TMP_Text instructionText;
     public float instructionDuration = 4f;
 
+    [Header("Result Typewriter")]
+    public float resultCharacterDelay = 0.04f;
+
     private Patient selectedPatient;
     private Coroutine diagnosisCoroutine;
+    private Coroutine resultCoroutine;
 
     void Start()
     {
@@ -33,7 +37,7 @@ public class DoctorTool : MonoBehaviour
 
         if (resultText != null)
         {
-            resultText.text = "";
+            ClearResultText();
             resultText.color = Color.white;
         }
 
@@ -52,6 +56,9 @@ public class DoctorTool : MonoBehaviour
     {
         selectedPatient = patient;
 
+        if (doctorCanvas != null)
+            doctorCanvas.SetActive(true);
+
         if (diagnosisCoroutine != null)
         {
             StopCoroutine(diagnosisCoroutine);
@@ -66,7 +73,7 @@ public class DoctorTool : MonoBehaviour
 
         if (resultText != null)
         {
-            resultText.text = "";
+            ClearResultText();
             resultText.color = Color.white;
         }
 
@@ -105,8 +112,19 @@ public class DoctorTool : MonoBehaviour
         if (healthText != null) healthText.text = "";
         if (resultText != null)
         {
-            resultText.text = "";
+            ClearResultText();
             resultText.color = Color.white;
+        }
+
+        if (doctorCanvas != null)
+            doctorCanvas.SetActive(false);
+    }
+
+    public void ClearPatient(Patient patient)
+    {
+        if (selectedPatient == patient)
+        {
+            ClearUI();
         }
     }
 
@@ -116,13 +134,12 @@ public class DoctorTool : MonoBehaviour
         {
             if (resultText != null)
             {
-                resultText.text = "Select a cure!";
-                resultText.color = Color.white;
+                ShowResult("Select a patient first!", Color.white);
             }
             return;
         }
 
-        Renderer patientRenderer = selectedPatient.GetComponent<Renderer>();
+        Renderer patientRenderer = selectedPatient.GetComponentInChildren<Renderer>();
 
         if (selectedPatient.currentCondition == cureType)
         {
@@ -130,8 +147,7 @@ public class DoctorTool : MonoBehaviour
 
             if (resultText != null)
             {
-                resultText.text = "Correct cure!";
-                resultText.color = Color.green;
+                ShowResult("Correct cure!", Color.green);
             }
 
             if (patientRenderer != null)
@@ -145,14 +161,56 @@ public class DoctorTool : MonoBehaviour
 
             if (resultText != null)
             {
-                resultText.text = "Wrong cure!";
-                resultText.color = Color.red;
+                ShowResult("Wrong cure!", Color.red);
             }
 
             if (patientRenderer != null)
             {
                 patientRenderer.material.color = Color.black;
             }
+        }
+    }
+
+    private void ShowResult(string message, Color color)
+    {
+        if (resultText == null)
+        {
+            return;
+        }
+
+        if (resultCoroutine != null)
+        {
+            StopCoroutine(resultCoroutine);
+        }
+
+        resultText.color = color;
+        resultCoroutine = StartCoroutine(TypeResult(message));
+    }
+
+    private IEnumerator TypeResult(string message)
+    {
+        resultText.text = "";
+
+        foreach (char letter in message)
+        {
+            resultText.text += letter;
+            yield return new WaitForSeconds(resultCharacterDelay);
+        }
+
+        resultCoroutine = null;
+    }
+
+    private void ClearResultText()
+    {
+        if (resultCoroutine != null)
+        {
+            StopCoroutine(resultCoroutine);
+            resultCoroutine = null;
+        }
+
+        if (resultText != null)
+        {
+            resultText.text = "";
         }
     }
 
