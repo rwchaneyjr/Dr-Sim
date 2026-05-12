@@ -7,6 +7,9 @@ public class DoctorHealTile : MonoBehaviour
 
     private void Start()
     {
+        if (doctorTool == null)
+            doctorTool = FindObjectOfType<DoctorTool>();
+
         if (doctorCanvas != null)
         {
             doctorCanvas.SetActive(false);
@@ -15,7 +18,7 @@ public class DoctorHealTile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Patient patient = other.GetComponent<Patient>();
+        Patient patient = other.GetComponentInParent<Patient>();
 
         if (patient != null)
         {
@@ -35,7 +38,7 @@ public class DoctorHealTile : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Patient patient = other.GetComponent<Patient>();
+        Patient patient = other.GetComponentInParent<Patient>();
 
         if (patient != null)
         {

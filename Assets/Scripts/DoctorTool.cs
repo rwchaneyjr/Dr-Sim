@@ -14,11 +14,17 @@ public class DoctorTool : MonoBehaviour
     public TMP_Text instructionText;
     public float instructionDuration = 4f;
 
+    [Header("Room Advance")]
+    public CubeGridSpawner gridSpawner;
+
     private Patient selectedPatient;
     private Coroutine diagnosisCoroutine;
 
     void Start()
     {
+        if (gridSpawner == null)
+            gridSpawner = FindObjectOfType<CubeGridSpawner>();
+
         if (doctorCanvas != null)
             doctorCanvas.SetActive(true);
 
@@ -138,6 +144,8 @@ public class DoctorTool : MonoBehaviour
             {
                 patientRenderer.material.color = Color.green;
             }
+
+            AdvancePatientToNextRoom();
         }
         else
         {
@@ -168,4 +176,18 @@ public class DoctorTool : MonoBehaviour
     public void CureBrokenArm() { Cure(Patient.Condition.BrokenArm); }
     public void CureToothAche() { Cure(Patient.Condition.ToothAche); }
     public void CureFlu() { Cure(Patient.Condition.Flu); }
+
+    void AdvancePatientToNextRoom()
+    {
+        if (gridSpawner == null)
+            gridSpawner = FindObjectOfType<CubeGridSpawner>();
+
+        if (gridSpawner == null)
+        {
+            Debug.LogWarning("Correct cure, but no CubeGridSpawner was found for the next room.");
+            return;
+        }
+
+        gridSpawner.SpawnPadAndPatientInFrontOf(selectedPatient);
+    }
 }
