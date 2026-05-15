@@ -10,6 +10,7 @@ public class Medicine : MonoBehaviour
         if (patient.currentCondition == treatsCondition)
         {
             patient.Heal(30f);
+            patient.Recover();
         }
         else
         {
