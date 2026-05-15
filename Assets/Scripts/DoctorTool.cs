@@ -122,15 +122,21 @@ public class DoctorTool : MonoBehaviour
             return;
         }
 
+        Renderer patientRenderer = selectedPatient.GetComponent<Renderer>();
+
         if (selectedPatient.currentCondition == cureType)
         {
             selectedPatient.Heal(30f);
-            selectedPatient.Recover();
 
             if (resultText != null)
             {
                 resultText.text = "Correct cure!";
                 resultText.color = Color.green;
+            }
+
+            if (patientRenderer != null)
+            {
+                patientRenderer.material.color = Color.green;
             }
         }
         else
@@ -141,6 +147,11 @@ public class DoctorTool : MonoBehaviour
             {
                 resultText.text = "Wrong cure!";
                 resultText.color = Color.red;
+            }
+
+            if (patientRenderer != null)
+            {
+                patientRenderer.material.color = Color.black;
             }
         }
     }
@@ -157,5 +168,4 @@ public class DoctorTool : MonoBehaviour
     public void CureBrokenArm() { Cure(Patient.Condition.BrokenArm); }
     public void CureToothAche() { Cure(Patient.Condition.ToothAche); }
     public void CureFlu() { Cure(Patient.Condition.Flu); }
-    public void CureStomachPain() { Cure(Patient.Condition.StomachPain); }
 }
