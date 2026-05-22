@@ -22,6 +22,7 @@ public class DoctorTool : MonoBehaviour
     private Patient selectedPatient;
     private Coroutine diagnosisCoroutine;
     private Coroutine correctCureCoroutine;
+    private Coroutine wrongCureCoroutine;
 
     void Start()
     {
@@ -246,9 +247,31 @@ public class DoctorTool : MonoBehaviour
                 resultText.color = Color.red;
             }
 
-            if (CubeGridSpawner.Instance != null)
-                CubeGridSpawner.Instance.MovePlayerLeft();
+            if (wrongCureCoroutine != null)
+                StopCoroutine(wrongCureCoroutine);
+
+            wrongCureCoroutine = StartCoroutine(HideAfterWrongCure());
         }
+    }
+
+    IEnumerator HideAfterWrongCure()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        HideCureUI();
+
+        if (resultText != null)
+            resultText.gameObject.SetActive(false);
+
+        PlayerMove player = FindObjectOfType<PlayerMove>();
+
+        if (player != null)
+            player.DestroyDoctorAfterDelay(0f);
+
+        if (CubeGridSpawner.Instance != null)
+            CubeGridSpawner.Instance.MovePlayerLeft();
+
+        wrongCureCoroutine = null;
     }
 
     IEnumerator HideAfterCorrectCure()
