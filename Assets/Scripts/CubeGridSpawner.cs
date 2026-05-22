@@ -29,9 +29,11 @@ public class CubeGridSpawner : MonoBehaviour
 
     [Header("Patient Move")]
     public Vector3 patientTargetOffset = new Vector3(0f, 0.15f, 0f);
+    public Vector3 patientNextRoomOffset = new Vector3(0f, 0.15f, 0f);
     public GameObject patientPrefab;
     public Transform patientPlacementPoint;
-    public string patientPlacementChildName = "CameraOffsetcube";
+    public string patientPlacementChildName = "PlacementCube";
+    public string cameraFollowChildName = "CameraOffsetcube";
     [Header("Camera Move")]
     public Camera cameraToMove;
     public Vector3 cameraTargetOffset = new Vector3(0f, 8f, -8f);
@@ -62,6 +64,10 @@ public class CubeGridSpawner : MonoBehaviour
         grid = new RoomController[rows, columns];
 
         SpawnGrid();
+
+        Patient patient = FindObjectOfType<Patient>();
+        if (patient != null)
+            SetCameraFollowTarget(patient);
     }
 
     // =========================
@@ -306,10 +312,19 @@ public class CubeGridSpawner : MonoBehaviour
     void MovePatientToTarget(Patient patient, GameObject target)
     {
         Transform placementPoint = GetPatientPlacementPoint(patient);
-        Vector3 targetPosition = target.transform.position + patientTargetOffset;
+        Vector3 targetPosition = target.transform.position + patientNextRoomOffset;
         Vector3 movementDelta = targetPosition - placementPoint.position;
 
         patient.transform.position += movementDelta;
+        SetCameraFollowTarget(patient);
+    }
+
+    void SetCameraFollowTarget(Patient patient)
+    {
+        CameraFollow cameraFollow = FindObjectOfType<CameraFollow>();
+
+        if (cameraFollow != null)
+            cameraFollow.target = GetPatientChildOrRoot(patient, cameraFollowChildName);
     }
 
     Transform GetPatientPlacementPoint(Patient patient)
@@ -323,6 +338,19 @@ public class CubeGridSpawner : MonoBehaviour
 
             if (childPlacementPoint != null)
                 return childPlacementPoint;
+        }
+
+        return patient.transform;
+    }
+
+    Transform GetPatientChildOrRoot(Patient patient, string childName)
+    {
+        if (!string.IsNullOrEmpty(childName))
+        {
+            Transform child = patient.transform.Find(childName);
+
+            if (child != null)
+                return child;
         }
 
         return patient.transform;
