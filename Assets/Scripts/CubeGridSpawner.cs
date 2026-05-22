@@ -30,6 +30,8 @@ public class CubeGridSpawner : MonoBehaviour
     [Header("Patient Move")]
     public Vector3 patientTargetOffset = new Vector3(0f, 0.15f, 0f);
     public GameObject patientPrefab;
+    public Transform patientPlacementPoint;
+    public string patientPlacementChildName = "CameraOffsetcube";
     [Header("Camera Move")]
     public Camera cameraToMove;
     public Vector3 cameraTargetOffset = new Vector3(0f, 8f, -8f);
@@ -279,7 +281,7 @@ public class CubeGridSpawner : MonoBehaviour
             return;
         }
 
-        patient.transform.position = target.transform.position + patientTargetOffset;
+        MovePatientToTarget(patient, target);
         DoctorTool tool = FindObjectOfType<DoctorTool>();
         if (tool != null)
         {
@@ -298,7 +300,32 @@ public class CubeGridSpawner : MonoBehaviour
         if (patient == null)
             return;
 
-        patient.transform.position = target.transform.position + patientTargetOffset;
+        MovePatientToTarget(patient, target);
+    }
+
+    void MovePatientToTarget(Patient patient, GameObject target)
+    {
+        Transform placementPoint = GetPatientPlacementPoint(patient);
+        Vector3 targetPosition = target.transform.position + patientTargetOffset;
+        Vector3 movementDelta = targetPosition - placementPoint.position;
+
+        patient.transform.position += movementDelta;
+    }
+
+    Transform GetPatientPlacementPoint(Patient patient)
+    {
+        if (patientPlacementPoint != null)
+            return patientPlacementPoint;
+
+        if (!string.IsNullOrEmpty(patientPlacementChildName))
+        {
+            Transform childPlacementPoint = patient.transform.Find(patientPlacementChildName);
+
+            if (childPlacementPoint != null)
+                return childPlacementPoint;
+        }
+
+        return patient.transform;
     }
   
     void MoveCameraToTarget(GameObject target)
