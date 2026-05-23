@@ -14,6 +14,11 @@ public class CameraFollow : MonoBehaviour
 
     public Transform target;
     float timer = 0f;
+    Renderer[] targetRenderers;
+    bool[] targetRendererStartStates;
+    Transform renderersTarget;
+    bool hasAppliedPatientVisibility;
+    bool currentPatientVisibility;
 
     void LateUpdate()
     {
@@ -24,6 +29,7 @@ public class CameraFollow : MonoBehaviour
             if (patient != null)
             {
                 target = patient.transform;
+                CacheTargetRenderers();
                 Debug.Log("CAMERA FOUND PATIENT");
             }
             else
@@ -33,20 +39,26 @@ public class CameraFollow : MonoBehaviour
         }
 
         timer += Time.deltaTime;
+        CacheTargetRenderers();
 
         Vector3 activeOffset;
         float activeSpeed;
+        bool shouldShowPatient;
 
         if (timer < startDuration)
         {
             activeOffset = startOffset;
             activeSpeed = startMoveSpeed;
+            shouldShowPatient = false;
         }
         else
         {
             activeOffset = normalOffset;
             activeSpeed = normalMoveSpeed;
+            shouldShowPatient = true;
         }
+
+        SetPatientVisible(shouldShowPatient);
 
         Vector3 wantedPosition =
             target.position + activeOffset;
@@ -68,5 +80,45 @@ public class CameraFollow : MonoBehaviour
             wantedRotation,
             turnSpeed * Time.deltaTime
         );
+    }
+
+    void CacheTargetRenderers()
+    {
+        if (target == null || renderersTarget == target)
+            return;
+
+        renderersTarget = target;
+        targetRenderers = target.GetComponentsInChildren<Renderer>(true);
+        targetRendererStartStates = new bool[targetRenderers.Length];
+
+        for (int i = 0; i < targetRenderers.Length; i++)
+        {
+            targetRendererStartStates[i] = targetRenderers[i].enabled;
+        }
+
+        hasAppliedPatientVisibility = false;
+    }
+
+    void SetPatientVisible(bool visible)
+    {
+        if (targetRenderers == null || targetRendererStartStates == null)
+            return;
+
+        if (hasAppliedPatientVisibility && currentPatientVisibility == visible)
+            return;
+
+        for (int i = 0; i < targetRenderers.Length; i++)
+        {
+            if (targetRenderers[i] != null)
+                targetRenderers[i].enabled = visible && targetRendererStartStates[i];
+        }
+
+        currentPatientVisibility = visible;
+        hasAppliedPatientVisibility = true;
+    }
+
+    void OnDisable()
+    {
+        SetPatientVisible(true);
     }
 }
