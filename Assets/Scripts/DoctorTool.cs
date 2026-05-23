@@ -18,6 +18,7 @@ public class DoctorTool : MonoBehaviour
     public GameObject doctorCanvas;
     public TMP_Text instructionText;
     public float instructionDuration = 4f;
+    public float diagnosisDisplayDuration = 3f;
 
     private Patient selectedPatient;
     private Coroutine diagnosisCoroutine;
@@ -154,6 +155,11 @@ public class DoctorTool : MonoBehaviour
             diagnosisText.gameObject.SetActive(true);
             diagnosisText.text = "Diagnosis:\n" + selectedPatient.currentCondition + "\nPress Space key for\ncure options";
         }
+
+        yield return new WaitForSeconds(diagnosisDisplayDuration);
+
+        HideDiagnosisUI();
+        diagnosisCoroutine = null;
     }
 
     void Update()
@@ -190,6 +196,15 @@ public class DoctorTool : MonoBehaviour
 
         if (treatmentDropdown != null)
             treatmentDropdown.gameObject.SetActive(false);
+    }
+
+    void HideDiagnosisUI()
+    {
+        if (diagnosisPanel != null)
+            diagnosisPanel.SetActive(false);
+
+        if (diagnosisText != null)
+            diagnosisText.gameObject.SetActive(false);
     }
 
     Patient.Condition GetRandomTreatableCondition()
