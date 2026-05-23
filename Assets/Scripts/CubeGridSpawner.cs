@@ -11,6 +11,12 @@ public class CubeGridSpawner : MonoBehaviour
     public GameObject targetPrefab;
     float targetHeight = 0 - .87f; // FIXED HEIGHT
 
+    [Header("Roof Pad")]
+    public bool spawnRoofPads = true;
+    public GameObject roofPadPrefab;
+    public Vector3 roofPadScale = new Vector3(2f, 0.02f, 2f);
+    public float roofPadVerticalOffset = 0.03f;
+
     [Header("Room Scale")]
     public float roomScale = 425f;
 
@@ -137,10 +143,59 @@ public class CubeGridSpawner : MonoBehaviour
         target.SetActive(false);
 
         room.target = target;
+        room.roofPad = SpawnRoofPad(newCube);
 
         target.transform.SetParent(null);
 
         return room;
+    }
+
+    GameObject SpawnRoofPad(GameObject roomObject)
+    {
+        if (!spawnRoofPads)
+            return null;
+
+        GameObject padPrefab = roofPadPrefab != null ? roofPadPrefab : targetPrefab;
+
+        if (padPrefab == null)
+            return null;
+
+        Bounds roomBounds = GetRoomBounds(roomObject);
+        Vector3 roofPosition = new Vector3(
+            roomBounds.center.x,
+            roomBounds.max.y + roofPadVerticalOffset,
+            roomBounds.center.z
+        );
+
+        GameObject roofPad = Instantiate(
+            padPrefab,
+            roofPosition,
+            Quaternion.identity
+        );
+
+        roofPad.name = "Roof Pad";
+        roofPad.transform.localScale = roofPadScale;
+        roofPad.SetActive(true);
+        roofPad.transform.SetParent(roomObject.transform, true);
+
+        return roofPad;
+    }
+
+    Bounds GetRoomBounds(GameObject roomObject)
+    {
+        Renderer[] renderers = roomObject.GetComponentsInChildren<Renderer>();
+
+        if (renderers.Length == 0)
+            return new Bounds(roomObject.transform.position, Vector3.zero);
+
+        Bounds bounds = renderers[0].bounds;
+
+        for (int i = 1; i < renderers.Length; i++)
+        {
+            bounds.Encapsulate(renderers[i].bounds);
+        }
+
+        return bounds;
     }
 
     // =========================
