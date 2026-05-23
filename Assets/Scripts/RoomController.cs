@@ -3,6 +3,7 @@
 public class RoomController : MonoBehaviour
 {
     public GameObject target;
+    public GameObject roofPad;
 
     public int row;
     public int col;
