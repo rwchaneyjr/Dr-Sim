@@ -141,7 +141,7 @@ public class CubeGridSpawner : MonoBehaviour
 
         target.transform.localScale = new Vector3(2f, 0.02f, 2f);
 
-        SpawnPadLight(room, newCube, target);
+        SpawnPadLight(newCube, target);
 
         target.SetActive(false);
 
@@ -152,7 +152,7 @@ public class CubeGridSpawner : MonoBehaviour
         return room;
     }
 
-    void SpawnPadLight(RoomController room, GameObject roomObject, GameObject target)
+    void SpawnPadLight(GameObject roomObject, GameObject target)
     {
         if (!spawnPadLight || target == null)
             return;
@@ -167,8 +167,6 @@ public class CubeGridSpawner : MonoBehaviour
         padLight.intensity = padLightIntensity;
         padLight.color = padLightColor;
         padLight.shadows = LightShadows.None;
-
-        room.padLight = padLight;
     }
 
     // =========================

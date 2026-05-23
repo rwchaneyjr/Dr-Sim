@@ -3,7 +3,6 @@
 public class RoomController : MonoBehaviour
 {
     public GameObject target;
-    public Light padLight;
 
     public int row;
     public int col;
