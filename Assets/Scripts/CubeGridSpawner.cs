@@ -11,6 +11,10 @@ public class CubeGridSpawner : MonoBehaviour
     public GameObject targetPrefab;
     float targetHeight = 0 - .87f; // FIXED HEIGHT
 
+    [Header("Roof Pad")]
+    public bool spawnRoofPad = true;
+    public float roofPadYOffset = 1f;
+
     [Header("Pad Light")]
     public bool spawnPadLight = true;
     public float padLightHeight = 5f;
@@ -140,6 +144,7 @@ public class CubeGridSpawner : MonoBehaviour
         }
 
         target.transform.localScale = new Vector3(2f, 0.02f, 2f);
+        SpawnRoofPad(target);
 
         SpawnPadLight(newCube, target);
 
@@ -150,6 +155,29 @@ public class CubeGridSpawner : MonoBehaviour
         target.transform.SetParent(null);
 
         return room;
+    }
+
+    void SpawnRoofPad(GameObject floorPad)
+    {
+        if (!spawnRoofPad || floorPad == null)
+            return;
+
+        GameObject roofPad = Instantiate(
+            targetPrefab,
+            floorPad.transform.position + Vector3.up * roofPadYOffset,
+            floorPad.transform.rotation
+        );
+
+        roofPad.name = "Roof Pad";
+        roofPad.tag = "Untagged";
+        roofPad.transform.localScale = floorPad.transform.localScale;
+        roofPad.transform.SetParent(floorPad.transform, true);
+
+        foreach (Collider collider in roofPad.GetComponentsInChildren<Collider>())
+            collider.enabled = false;
+
+        foreach (CureTargetTrigger trigger in roofPad.GetComponentsInChildren<CureTargetTrigger>())
+            trigger.enabled = false;
     }
 
     void SpawnPadLight(GameObject roomObject, GameObject target)
