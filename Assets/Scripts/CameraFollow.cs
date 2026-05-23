@@ -12,6 +12,10 @@ public class CameraFollow : MonoBehaviour
     public float normalMoveSpeed = 2.5f;
     public float turnSpeed = 5f;
 
+    [Header("Patient Visibility")]
+    public float patientAppearDelay = 0.5f;
+    public float cameraRestDistance = 0.05f;
+
     public Transform target;
     float timer = 0f;
     Renderer[] targetRenderers;
@@ -19,6 +23,8 @@ public class CameraFollow : MonoBehaviour
     Transform renderersTarget;
     bool hasAppliedPatientVisibility;
     bool currentPatientVisibility;
+    float patientAppearTimer = 0f;
+    bool patientHasAppeared;
 
     void LateUpdate()
     {
@@ -43,25 +49,22 @@ public class CameraFollow : MonoBehaviour
 
         Vector3 activeOffset;
         float activeSpeed;
-        bool shouldShowPatient;
+        bool normalCameraActive;
 
         if (timer < startDuration)
         {
             activeOffset = startOffset;
             activeSpeed = startMoveSpeed;
-            shouldShowPatient = false;
+            normalCameraActive = false;
         }
         else
         {
             activeOffset = normalOffset;
             activeSpeed = normalMoveSpeed;
-            shouldShowPatient = true;
+            normalCameraActive = true;
         }
 
-        SetPatientVisible(shouldShowPatient);
-
-        Vector3 wantedPosition =
-            target.position + activeOffset;
+        Vector3 wantedPosition = target.position + activeOffset;
 
         transform.position = Vector3.Lerp(
             transform.position,
@@ -69,12 +72,20 @@ public class CameraFollow : MonoBehaviour
             activeSpeed * Time.deltaTime
         );
 
+        bool cameraAtRest =
+            normalCameraActive &&
+            Vector3.Distance(transform.position, wantedPosition) <= cameraRestDistance;
+
+        UpdatePatientVisibility(normalCameraActive, cameraAtRest);
+
         Quaternion wantedRotation =
             Quaternion.LookRotation(target.position - transform.position);
+
         if (timer >= startDuration)
         {
             wantedRotation *= Quaternion.Euler(-20f, 0f, 0f);
         }
+
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             wantedRotation,
@@ -97,6 +108,8 @@ public class CameraFollow : MonoBehaviour
         }
 
         hasAppliedPatientVisibility = false;
+        patientAppearTimer = 0f;
+        patientHasAppeared = false;
     }
 
     void SetPatientVisible(bool visible)
@@ -115,6 +128,34 @@ public class CameraFollow : MonoBehaviour
 
         currentPatientVisibility = visible;
         hasAppliedPatientVisibility = true;
+    }
+
+    void UpdatePatientVisibility(bool normalCameraActive, bool cameraAtRest)
+    {
+        if (patientHasAppeared)
+        {
+            SetPatientVisible(true);
+            return;
+        }
+
+        if (!normalCameraActive || !cameraAtRest)
+        {
+            patientAppearTimer = 0f;
+            SetPatientVisible(false);
+            return;
+        }
+
+        patientAppearTimer += Time.deltaTime;
+
+        if (patientAppearTimer >= patientAppearDelay)
+        {
+            patientHasAppeared = true;
+            SetPatientVisible(true);
+        }
+        else
+        {
+            SetPatientVisible(false);
+        }
     }
 
     void OnDisable()
