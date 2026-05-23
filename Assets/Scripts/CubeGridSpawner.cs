@@ -11,6 +11,13 @@ public class CubeGridSpawner : MonoBehaviour
     public GameObject targetPrefab;
     float targetHeight = 0 - .87f; // FIXED HEIGHT
 
+    [Header("Pad Light")]
+    public bool spawnPadLight = true;
+    public float padLightHeight = 5f;
+    public float padLightRange = 12f;
+    public float padLightIntensity = 1.5f;
+    public Color padLightColor = new Color(1f, 0.95f, 0.8f);
+
     [Header("Room Scale")]
     public float roomScale = 425f;
 
@@ -134,6 +141,8 @@ public class CubeGridSpawner : MonoBehaviour
 
         target.transform.localScale = new Vector3(2f, 0.02f, 2f);
 
+        SpawnPadLight(room, newCube, target);
+
         target.SetActive(false);
 
         room.target = target;
@@ -141,6 +150,25 @@ public class CubeGridSpawner : MonoBehaviour
         target.transform.SetParent(null);
 
         return room;
+    }
+
+    void SpawnPadLight(RoomController room, GameObject roomObject, GameObject target)
+    {
+        if (!spawnPadLight || target == null)
+            return;
+
+        GameObject lightObject = new GameObject("Pad Light");
+        lightObject.transform.position = target.transform.position + Vector3.up * padLightHeight;
+        lightObject.transform.SetParent(roomObject.transform, true);
+
+        Light padLight = lightObject.AddComponent<Light>();
+        padLight.type = LightType.Point;
+        padLight.range = padLightRange;
+        padLight.intensity = padLightIntensity;
+        padLight.color = padLightColor;
+        padLight.shadows = LightShadows.None;
+
+        room.padLight = padLight;
     }
 
     // =========================
